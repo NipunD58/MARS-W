@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useLenis } from "lenis/react";
 import { investments } from "@/data/investments";
 
 export function InvestmentsSection() {
@@ -8,31 +7,6 @@ export function InvestmentsSection() {
   const isManualRef = useRef(false);
   const manualTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const lenis = useLenis((l) => {
-    if (!sectionRef.current || isManualRef.current) return;
-
-    const rect = sectionRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const totalScrollable = rect.height - windowHeight;
-
-    if (totalScrollable <= 0) return;
-
-    const current = -rect.top;
-    const progress = Math.min(Math.max(current / totalScrollable, 0), 1);
-
-    // Only switch actively when the sticky container is in view
-    if (rect.top <= 100 && rect.bottom >= windowHeight - 100) {
-      if (progress < 0.35) {
-        setActiveIndex(0);
-      } else if (progress < 0.7) {
-        setActiveIndex(1);
-      } else {
-        setActiveIndex(2);
-      }
-    }
-  });
-
-  // Fallback native scroll listener
   useEffect(() => {
     const onScroll = () => {
       if (!sectionRef.current || isManualRef.current) return;
@@ -81,15 +55,11 @@ export function InvestmentsSection() {
     const targetProgress = i === 0 ? 0.05 : i === 1 ? 0.5 : 0.88;
     const targetScroll = window.scrollY + rect.top + totalScrollable * targetProgress;
 
-    if (lenis) {
-      lenis.scrollTo(targetScroll, { duration: 0.9 });
-    } else {
-      window.scrollTo({ top: targetScroll, behavior: "smooth" });
-    }
+    window.scrollTo({ top: targetScroll, behavior: "smooth" });
   };
 
   return (
-    <div ref={sectionRef} className="relative h-[250vh]">
+    <div ref={sectionRef} className="relative min-h-0 md:min-h-[160vh]">
       {/* Anchor targets for external/hero links */}
       <div id="investments" className="absolute top-0 pointer-events-none" />
       <div id="inv-01" className="absolute top-0 pointer-events-none" />
@@ -97,7 +67,7 @@ export function InvestmentsSection() {
       <div id="inv-03" className="absolute top-[75%] pointer-events-none" />
 
       {/* Sticky viewport frame */}
-      <section className="sticky top-0 flex min-h-screen flex-col justify-center px-6 py-8 md:px-10 md:py-12">
+      <section className="sticky top-0 flex min-h-screen flex-col justify-start px-6 py-8 md:justify-center md:px-10 md:py-12">
         <div className="mx-auto w-full max-w-7xl">
           {/* Section Header */}
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-4 md:mb-8">
