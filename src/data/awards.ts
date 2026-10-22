@@ -79,7 +79,7 @@ export const awardsData: AwardItem[] = [
     title: "Automate Innovation Award — Premier Autonomous Systems",
     organization: "Association for Advancing Automation (A3)",
     category: "Robotics & Hardware",
-    project: "Axiom Autonomous Heavy Sortation & Billet Core",
+    project: "MARS Autonomous Heavy Sortation & Billet Core",
     citation:
       "Recognized as the premier industrial automation breakthrough for end-to-end autonomous picking and heavy manipulation under extreme dust and thermal variance.",
     impactMetric: {
@@ -111,7 +111,7 @@ export const awardsData: AwardItem[] = [
     title: "Financial Times / Sifted Top Deeptech Venture Portfolio",
     organization: "Financial Times & Sifted",
     category: "Venture & Capital",
-    project: "Axiom Robotics Capital Fund I",
+    project: "MARS Robotics Capital Fund I",
     citation:
       "Top-ranked physical automation capital platform bridging private equity operational discipline with deeptech venture upside across legacy supply chains.",
     impactMetric: {

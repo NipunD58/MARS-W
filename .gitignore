@@ -15,7 +15,16 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
-
+.agents
+.claude
+.codex
+.cursor
+.gemini
+.lovable
+.loveable
+.impeccable
+.agent
+PRODUCT.md
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

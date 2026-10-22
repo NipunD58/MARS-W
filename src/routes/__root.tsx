@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SmoothScroll } from "../components/SmoothScroll";
 import { SiteLoader } from "../components/SiteLoader";
 import { NotFoundView } from "../components/NotFoundView";
+import { SITE_NAME, SITE_URL, SOCIAL_IMAGE } from "../lib/seo";
 
 function NotFoundComponent() {
   return <NotFoundView />;
@@ -63,16 +64,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Axiom — Robotics Capital" },
-      { name: "description", content: "Axiom deploys physical automation into legacy industries." },
-      { name: "author", content: "Axiom" },
-      { property: "og:title", content: "Axiom — Robotics Capital" },
       {
-        property: "og:description",
-        content: "Axiom deploys physical automation into legacy industries.",
+        name: "theme-color",
+        content: "#080c09",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "author", content: SITE_NAME },
+      { property: "og:site_name", content: SITE_NAME },
+      {
+        "script:ld+json": {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "MARS Capital Management",
+          legalName: "MARS Capital Management LLC",
+          url: SITE_URL,
+          description: "MARS invests in and deploys physical automation across legacy industries.",
+          image: SOCIAL_IMAGE,
+          knowsAbout: ["Robotics", "Physical automation", "Legacy industries"],
+        },
+      },
     ],
     links: [
       {
@@ -84,7 +93,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Michroma&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon", sizes: "any" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
     ],
   }),
   shellComponent: RootShell,

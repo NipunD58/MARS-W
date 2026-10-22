@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { SiteNavbar } from "./SiteNavbar";
+import { SiteFooter } from "./SiteFooter";
 
 export function NotFoundView() {
   const quickLinks = [
-    { n: "01", label: "Thesis & Manifesto", href: "/#thesis", desc: "Axiom deployment strategy" },
+    { n: "01", label: "Thesis & Manifesto", href: "/#thesis", desc: "MARS deployment strategy" },
     {
       n: "02",
       label: "Portfolio Investments",
@@ -57,39 +58,11 @@ export function NotFoundView() {
               </h1>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg font-sans">
                 Please verify the destination URL, or use the index below to navigate back to
-                Axiom's robotics portfolio and thesis.
+                MARS's robotics portfolio and thesis.
               </p>
             </div>
 
-            {/* Quick Directory Grid */}
-            <div className="border-t border-border pt-6">
-              <span className="font-sans text-xs uppercase tracking-widest font-semibold text-muted-foreground">
-                Navigation Directory
-              </span>
-              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {quickLinks.map((item) => (
-                  <a
-                    key={item.n}
-                    href={item.href}
-                    className="group flex items-center justify-between border border-border p-4 transition-colors hover:border-foreground hover:bg-card"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 font-sans text-xs text-muted-foreground">
-                        <span className="font-semibold">{item.n}</span>
-                        <span>•</span>
-                        <span className="text-foreground group-hover:underline font-medium">
-                          {item.label}
-                        </span>
-                      </div>
-                      <p className="mt-1 font-sans text-[11px] text-muted-foreground">
-                        {item.desc}
-                      </p>
-                    </div>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
-                  </a>
-                ))}
-              </div>
-            </div>
+
 
             {/* Primary Action Button */}
             <div className="pt-2">
@@ -105,31 +78,7 @@ export function NotFoundView() {
         </div>
       </main>
 
-      {/* Professional Footer */}
-      <footer className="border-t border-border px-6 py-8 md:px-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 font-sans text-xs">
-          <span className="text-muted-foreground">
-            © 2026 Axiom Capital Management. All rights reserved.
-          </span>
-          <div className="flex flex-wrap items-center gap-6 uppercase text-muted-foreground">
-            <Link to="/" className="hover:text-foreground transition-colors">
-              Home
-            </Link>
-            <Link to="/privacy" className="hover:text-foreground transition-colors">
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className="hover:text-foreground transition-colors">
-              Terms of Service
-            </Link>
-            <a
-              href="mailto:contact@axiomcapital.ai"
-              className="hover:text-foreground transition-colors"
-            >
-              Contact
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

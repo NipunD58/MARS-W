@@ -1,26 +1,48 @@
 import Lenis from "lenis";
-import { useEffect, useRef, type ReactNode } from "react";
-import { useLocation } from "@tanstack/react-router";
+import { useEffect, type ReactNode } from "react";
 
 interface SmoothScrollProps {
   children: ReactNode;
 }
 
 function useLenisScroll() {
-  const lenisRef = useRef<Lenis | null>(null);
-  const location = useLocation();
-
   useEffect(() => {
     const lenis = new Lenis({
       autoRaf: false,
-      lerp: 0.09,
+      duration: 1.25,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.2,
-      syncTouch: false,
-      anchors: { duration: 1.1 },
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.8,
     });
-    lenisRef.current = lenis;
+    const handleAnchorClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const anchor = target.closest<HTMLAnchorElement>("a[href^='#']");
+      if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+
+      const hash = anchor.getAttribute("href");
+      if (!hash) return;
+
+      const id = hash === "#" ? "" : decodeURIComponent(hash.slice(1));
+      const element = id ? document.getElementById(id) : null;
+      if (hash !== "#" && !element) return;
+
+      event.preventDefault();
+      if (id) {
+        window.history.pushState(null, "", `#${encodeURIComponent(id)}`);
+      } else {
+        window.history.pushState(null, "", window.location.pathname + window.location.search);
+      }
+      lenis.scrollTo(element ?? 0, { offset: -80, duration: 1.4 });
+    };
+
+    document.addEventListener("click", handleAnchorClick);
 
     let frameId = 0;
     const raf = (time: number) => {
@@ -29,26 +51,22 @@ function useLenisScroll() {
     };
     frameId = window.requestAnimationFrame(raf);
 
+    if (window.location.hash) {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      const element = document.getElementById(id);
+      if (element) {
+        window.setTimeout(() => {
+          lenis.scrollTo(element, { offset: -80, duration: 1.4 });
+        }, 0);
+      }
+    }
+
     return () => {
+      document.removeEventListener("click", handleAnchorClick);
       window.cancelAnimationFrame(frameId);
       lenis.destroy();
-      lenisRef.current = null;
     };
   }, []);
-
-  useEffect(() => {
-    if (!location.hash) return;
-
-    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-    const lenis = lenisRef.current;
-    if (!target || !lenis) return;
-
-    const timer = window.setTimeout(() => {
-      lenis.scrollTo(target, { duration: 1.1, offset: 0 });
-    }, 0);
-
-    return () => window.clearTimeout(timer);
-  }, [location.hash, location.pathname]);
 }
 
 export function SmoothScroll({ children }: SmoothScrollProps) {

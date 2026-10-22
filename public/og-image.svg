@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#080c09"/>
+  <path d="M80 86h1040M80 544h1040" stroke="#dce0d8" stroke-opacity=".18"/>
+  <circle cx="88" cy="86" r="4" fill="#9ee65a"/>
+  <text x="112" y="94" fill="#e7e9e5" font-family="Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="4">MARS CAPITAL</text>
+  <text x="80" y="286" fill="#e7e9e5" font-family="Georgia, serif" font-size="76" letter-spacing="-2">Robotics capital for</text>
+  <text x="80" y="374" fill="#e7e9e5" font-family="Georgia, serif" font-size="76" letter-spacing="-2">legacy industries.</text>
+  <path d="M82 424h82" stroke="#9ee65a" stroke-width="4"/>
+  <text x="80" y="482" fill="#b7bdb5" font-family="Arial, sans-serif" font-size="17" font-weight="600" letter-spacing="3">PHYSICAL AUTOMATION · INVESTMENT &amp; DEPLOYMENT</text>
+  <text x="80" y="584" fill="#b7bdb5" font-family="Arial, sans-serif" font-size="16" letter-spacing="2">MARSCAPITAL.AI</text>
+  <path d="M9 57 6 16 15 6 30 5 35 10 40 5 55 4 62 14 63 57 50 58 48 19 43 19 44 48 29 49 27 19 22 19 23 58Z" transform="translate(850 145) scale(3.7)" fill="#121914" stroke="#9ee65a" stroke-opacity=".78" stroke-width=".7" stroke-linejoin="round"/>
+</svg>

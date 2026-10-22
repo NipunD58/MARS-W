@@ -1,16 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TermsPage } from "./terms";
+import { seoHead } from "@/lib/seo";
+import TermsPage from "./terms";
 
 export const Route = createFileRoute("/terms-and-conditions")({
-  head: () => ({
-    meta: [
-      { title: "Terms & Conditions — Axiom Robotics Capital" },
-      {
-        name: "description",
-        content:
-          "Terms of Service, regulatory disclosures, and usage agreements for Axiom Capital Management.",
-      },
-    ],
-  }),
+  head: () =>
+    seoHead({
+      title: "Terms & Conditions | MARS Capital",
+      description:
+        "Review the website terms, regulatory disclosures, and usage conditions for MARS Capital Management.",
+      path: "/terms",
+    }),
   component: TermsPage,
 });

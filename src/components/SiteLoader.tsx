@@ -24,17 +24,17 @@ export function SiteLoader() {
     <div
       className={`site-loader ${isExiting ? "site-loader--exiting" : ""}`}
       role="status"
-      aria-label="Loading Axiom"
+      aria-label="Loading MARS"
     >
       <div className="site-loader__grid" aria-hidden="true" />
       <div className="site-loader__content">
         <div className="site-loader__header">
           <span className="site-loader__mark">A</span>
-          <span className="site-loader__label">Axiom / 2026</span>
+          <span className="site-loader__label">MARS / 2026</span>
         </div>
 
         <div className="site-loader__wordmark" aria-hidden="true">
-          AXIOM
+          MARS
         </div>
 
         <div className="site-loader__footer">

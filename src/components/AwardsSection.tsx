@@ -1,244 +1,148 @@
+import { ArrowUpRight, Check, ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { Award, ChevronDown, ChevronUp, Sparkles, ShieldCheck } from "lucide-react";
 import {
-  awardsData,
   awardCategories,
   awardStats,
+  awardsData,
   type AwardCategory,
   type AwardItem,
 } from "@/data/awards";
 
 export function AwardsSection() {
   const [selectedCategory, setSelectedCategory] = useState<AwardCategory>("All");
-  const [expandedId, setExpandedId] = useState<string>("ieee-2025");
-
+  const [selectedId, setSelectedId] = useState("ieee-2025");
   const filteredAwards = awardsData.filter(
     (item) => selectedCategory === "All" || item.category === selectedCategory,
   );
+  const selectedAward = filteredAwards.find((item) => item.id === selectedId) ?? filteredAwards[0];
 
-  const toggleExpand = (id: string) => {
-    setExpandedId((prev) => (prev === id ? "" : id));
+  const selectCategory = (category: AwardCategory) => {
+    setSelectedCategory(category);
+    const firstMatch = awardsData.find((item) => category === "All" || item.category === category);
+    if (firstMatch) setSelectedId(firstMatch.id);
   };
 
+  if (!selectedAward) return null;
+
   return (
-    <section
-      id="awards"
-      aria-label="Awards and Industry Recognition"
-      className="grid grid-cols-1 border-b border-border bg-background md:grid-cols-[1fr_2fr]"
-    >
-      {/* Left Column: Metadata, Filters & Institutional Stats */}
-      <div className="flex flex-col border-border px-6 py-16 md:border-r md:px-7">
-        <div className="space-y-10 md:sticky md:top-12 md:space-y-12">
-          {/* Section Marker */}
+    <section id="awards" className="bg-[#151515] text-white" aria-label="Awards and recognition">
+      <div className="mx-auto max-w-[1500px] px-5 py-16 sm:px-8 md:px-12 md:py-24">
+        <div className="grid gap-14 lg:grid-cols-[0.58fr_1.42fr] lg:gap-20">
           <div>
-            <span className="font-sans text-xs uppercase tracking-widest font-semibold text-muted-foreground">
-              ⊢ Recognition
-            </span>
-            <div className="mt-3 flex items-center gap-2">
-              <Award className="h-5 w-5 text-foreground" />
-              <h3 className="font-display text-xl uppercase tracking-tight text-foreground">
-                Awards Won
-              </h3>
-            </div>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground font-sans">
-              International peer recognitions across robotics engineering, on-premise AI, and
-              deeptech investment performance.
+            <h2 className="max-w-sm font-serif text-5xl leading-[0.9] tracking-[-0.03em] text-white sm:text-6xl md:text-8xl">
+              Recognition that survives contact with reality.
+            </h2>
+            <p className="mt-8 max-w-sm text-sm leading-relaxed text-white/60">
+              A record of work evaluated by the engineering, industrial, and capital communities
+              MARS serves.
             </p>
+
+            <dl className="mt-12 grid grid-cols-2 border-t border-white/15">
+              {awardStats.map((stat) => (
+                <div key={stat.label} className="border-b border-r border-white/15 py-5 pr-4">
+                  <dd className="font-display text-2xl text-[#AAE841]">{stat.value}</dd>
+                  <dt className="mt-2 text-[10px] uppercase leading-tight tracking-wider text-white/55">
+                    {stat.label}
+                  </dt>
+                </div>
+              ))}
+            </dl>
+
+            <div className="mt-8 flex items-start gap-3 border-t border-white/15 pt-5 text-xs leading-relaxed text-white/55">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#AAE841]" />
+              <span>Independent jury validation across every listed distinction.</span>
+            </div>
           </div>
 
-          {/* Category Filter Pills */}
           <div>
-            <span className="block font-sans text-[10px] uppercase tracking-wider font-semibold text-muted-foreground mb-3">
-              Filter by Discipline:
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {awardCategories.map((cat) => {
-                const isActive = selectedCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`rounded-full px-3 py-1.5 font-sans text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                      isActive
-                        ? "bg-foreground text-background shadow-xs font-semibold"
-                        : "border border-border bg-card/60 text-muted-foreground hover:border-foreground hover:text-foreground font-medium"
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/20 pb-5">
+              <p className="font-display text-xs uppercase tracking-[0.16em] text-white/50">
+                The archive / 2023—2025
+              </p>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-white transition-colors hover:text-[#AAE841] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#AAE841]"
+              >
+                Request dossier <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2" aria-label="Award categories">
+              {awardCategories.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => selectCategory(category)}
+                  className={`px-3 py-2 text-[10px] uppercase tracking-wider transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#AAE841] ${selectedCategory === category
+                      ? "bg-[#AAE841] text-black"
+                      : "border border-white/20 text-white/60 hover:border-white/60 hover:text-white"
                     }`}
+                  aria-pressed={selectedCategory === category}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-9 border-t border-white/20">
+              {filteredAwards.map((item: AwardItem) => {
+                const isSelected = item.id === selectedAward.id;
+                return (
+                  <article
+                    key={item.id}
+                    className={`border-b border-white/15 transition-colors ${isSelected ? "bg-white/[0.06]" : ""
+                      }`}
                   >
-                    {cat}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedId(item.id)}
+                      className="grid w-full grid-cols-[50px_1fr_24px] items-start gap-4 px-3 py-5 text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#AAE841] sm:grid-cols-[70px_1fr_24px] sm:px-5"
+                      aria-expanded={isSelected}
+                    >
+                      <span className="font-display text-xs text-[#AAE841]">{item.year}</span>
+                      <span>
+                        <span className="block font-sans text-base font-semibold leading-tight text-white sm:text-lg">
+                          {item.title}
+                        </span>
+                        <span className="mt-2 block text-[10px] uppercase tracking-wider text-white/45">
+                          {item.organization} / {item.category}
+                        </span>
+                      </span>
+                      <ChevronDown
+                        className={`mt-1 h-4 w-4 text-white/50 transition-transform ${isSelected ? "rotate-180 text-[#AAE841]" : ""
+                          }`}
+                      />
+                    </button>
+
+                    {isSelected && (
+                      <div className="grid gap-7 px-3 pb-6 sm:grid-cols-[1fr_190px] sm:px-[95px]">
+                        <div>
+                          <p className="text-xs uppercase tracking-wider text-white/45">
+                            Recognized work
+                          </p>
+                          <p className="mt-2 text-sm leading-relaxed text-white/75">
+                            {item.project}
+                          </p>
+                          <blockquote className="mt-5 border-l border-[#AAE841] pl-4 font-serif text-lg italic leading-relaxed text-white/90">
+                            “{item.citation}”
+                          </blockquote>
+                        </div>
+                        <div className="self-start border border-white/15 p-4">
+                          <p className="text-[10px] uppercase tracking-wider text-white/45">
+                            Verified metric
+                          </p>
+                          <p className="mt-3 font-display text-2xl text-[#AAE841]">
+                            {item.impactMetric.value}
+                          </p>
+                          <p className="mt-1 text-xs text-white/65">{item.impactMetric.label}</p>
+                        </div>
+                      </div>
+                    )}
+                  </article>
                 );
               })}
             </div>
           </div>
-
-          {/* Institutional Stats Summary */}
-          <div className="border-t border-border pt-6">
-            <span className="block font-sans text-[10px] uppercase tracking-wider font-semibold text-muted-foreground mb-4">
-              Institutional Track Record:
-            </span>
-            <dl className="grid grid-cols-2 gap-4">
-              {awardStats.map((stat) => (
-                <div key={stat.label} className="border-l-2 border-foreground pl-3">
-                  <dd className="font-display text-2xl font-bold text-foreground">{stat.value}</dd>
-                  <dt className="mt-1 font-sans text-[10px] uppercase font-semibold text-muted-foreground tracking-wider leading-tight">
-                    {stat.label}
-                  </dt>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground/75 font-sans">
-                    {stat.detail}
-                  </p>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          {/* Verified Quality Seal */}
-          <div className="rounded-xl border border-border bg-card/60 p-4 font-sans text-xs shadow-xs">
-            <div className="flex items-center gap-2 text-foreground font-semibold">
-              <ShieldCheck className="h-4 w-4 text-[#AAE841]" />
-              <span className="uppercase text-[11px] tracking-wider">
-                Independent Jury Validation
-              </span>
-            </div>
-            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground font-sans">
-              All listed distinctions represent non-sponsored competitive evaluations validated by
-              academic, engineering, and tier-1 industrial committees.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Column: Editorial Headline & Interactive Award List */}
-      <div className="px-6 py-16 md:px-10">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 font-sans text-[11px] uppercase tracking-wider font-medium text-muted-foreground">
-            <Sparkles className="h-3 w-3 text-[#AAE841]" />
-            <span>Competitive Honors &amp; Benchmarks</span>
-          </div>
-
-          <h2 className="mt-4 font-serif text-4xl leading-[0.95] tracking-tight text-foreground sm:text-5xl md:text-7xl">
-            Engineering excellence proven under industrial conditions.
-          </h2>
-
-          <p className="mt-6 font-sans text-xs uppercase tracking-widest text-muted-foreground md:text-sm font-medium">
-            Peer-reviewed breakthroughs in physical robotics, edge AI inference, and deeptech scale:
-          </p>
-        </div>
-
-        {/* Awards Accordion List */}
-        <div className="mt-12 divide-y divide-border border-y border-border">
-          {filteredAwards.map((item: AwardItem) => {
-            const isExpanded = expandedId === item.id;
-            return (
-              <article
-                key={item.id}
-                className={`transition-colors duration-200 ${
-                  isExpanded ? "bg-card/40" : "hover:bg-card/20"
-                }`}
-              >
-                {/* Clickable Row Header */}
-                <button
-                  type="button"
-                  onClick={() => toggleExpand(item.id)}
-                  aria-expanded={isExpanded}
-                  className="flex w-full items-start justify-between gap-4 py-6 text-left transition-colors cursor-pointer"
-                >
-                  <div className="flex-1 space-y-2">
-                    {/* Meta Row: Year + Category + Organization */}
-                    <div className="flex flex-wrap items-center gap-2.5 font-sans text-xs">
-                      <span className="rounded border border-foreground/30 bg-foreground/5 px-2 py-0.5 font-bold text-foreground">
-                        {item.year}
-                      </span>
-                      <span className="text-muted-foreground">/</span>
-                      <span className="text-muted-foreground uppercase font-medium">
-                        {item.category}
-                      </span>
-                      <span className="text-muted-foreground">/</span>
-                      <span className="font-semibold text-foreground/90">{item.organization}</span>
-                      {item.isFeatured && (
-                        <span className="ml-auto inline-flex items-center rounded-full bg-[#AAE841]/20 px-2.5 py-0.5 font-sans text-[10px] font-bold text-foreground border border-[#AAE841]">
-                          ★ {item.badge}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Award Title */}
-                    <h3 className="font-sans text-xl font-bold tracking-tight text-foreground md:text-2xl pt-1">
-                      {item.title}
-                    </h3>
-
-                    {/* Associated Project / Technology */}
-                    <p className="font-sans text-xs text-muted-foreground">
-                      <span className="text-foreground/70 font-medium">Nominated Work:</span>{" "}
-                      {item.project}
-                    </p>
-                  </div>
-
-                  {/* Toggle Indicator Button */}
-                  <div className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-all duration-300">
-                    {isExpanded ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </div>
-                </button>
-
-                {/* Expandable Citation & Metric Drawer */}
-                {isExpanded && (
-                  <div className="pb-8 pt-2 transition-all">
-                    <div className="grid gap-6 rounded-2xl border border-border bg-card p-4 shadow-xs sm:p-6 md:grid-cols-[2fr_1fr]">
-                      {/* Jury Citation */}
-                      <div>
-                        <h4 className="font-sans text-[11px] uppercase tracking-wider font-semibold text-muted-foreground">
-                          Official Jury Citation
-                        </h4>
-                        <blockquote className="mt-2 text-base leading-relaxed text-foreground/95 font-serif italic border-l-2 border-foreground pl-4">
-                          "{item.citation}"
-                        </blockquote>
-                        <div className="mt-4 flex items-center gap-2 font-sans text-xs text-muted-foreground">
-                          <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                          <span>Issuing Authority: {item.organization}</span>
-                        </div>
-                      </div>
-
-                      {/* Verified Impact Metric Box */}
-                      <div className="flex flex-col justify-between rounded-xl border border-border bg-muted/40 p-4">
-                        <div>
-                          <span className="font-sans text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
-                            Verified Metric
-                          </span>
-                          <p className="mt-1 font-display text-3xl font-extrabold text-foreground">
-                            {item.impactMetric.value}
-                          </p>
-                          <p className="font-sans text-xs text-foreground/80 font-medium">
-                            {item.impactMetric.label}
-                          </p>
-                        </div>
-
-                        <div className="mt-4 border-t border-border pt-2 font-sans text-[10px] text-muted-foreground flex justify-between">
-                          <span>AUDIT STATUS</span>
-                          <span className="font-bold text-foreground">VERIFIED</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </article>
-            );
-          })}
-        </div>
-
-        {/* Footer Note & Document Link */}
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6 font-sans text-xs text-muted-foreground">
-          <span>Total archive: 18 competitive awards &amp; citations (2020 – 2026)</span>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-1.5 uppercase tracking-wider text-foreground hover:underline underline-offset-4 font-semibold"
-          >
-            <span>Request full institutional dossier</span>
-            <span>→</span>
-          </a>
         </div>
       </div>
     </section>

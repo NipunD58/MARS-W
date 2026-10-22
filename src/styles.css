@@ -158,8 +158,8 @@
     color: #000000;
   }
 
-  html.lenis {
-    scroll-behavior: auto !important;
+  html {
+    scroll-behavior: auto;
   }
 
   body {

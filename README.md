@@ -1,6 +1,6 @@
-# Axiom
+# MARS
 
-Axiom is a TanStack Start website for a robotics investment and deployment studio.
+MARS is a TanStack Start website for a robotics investment and deployment studio.
 
 ## Requirements
 

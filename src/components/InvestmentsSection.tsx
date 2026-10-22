@@ -1,234 +1,245 @@
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { investments } from "@/data/investments";
+import type { MotionValue } from "motion/react";
+import { investments, type InvestmentItem } from "@/data/investments";
+
+const cardColors = ["#dedbd2", "#d0c8bb", "#cbd1c2"];
+
+interface InvestmentCardProps {
+  investment: InvestmentItem;
+  index: number;
+  progress: MotionValue<number>;
+  reducedMotion: boolean;
+  registerCard: (index: number, element: HTMLDivElement | null) => void;
+}
+
+function InvestmentCard({
+  investment,
+  index,
+  progress,
+  reducedMotion,
+  registerCard,
+}: InvestmentCardProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "start start"],
+  });
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.18, 1]);
+  const targetScale = 1 - (investments.length - index) * 0.035;
+  const cardScale = useTransform(progress, [index * 0.2, 1], [1, targetScale]);
+
+  return (
+    <div
+      ref={(element) => {
+        containerRef.current = element;
+        registerCard(index, element);
+      }}
+      data-index={index}
+      className={`relative flex min-h-[max(140svh,760px)] items-start justify-center ${
+        index === 0 ? "" : "-mt-[80svh]"
+      }`}
+    >
+      <motion.article
+        id={investment.anchorId}
+        className="sticky grid h-[min(80svh,720px)] min-h-[min(80svh,520px)] w-full origin-top grid-rows-[0.78fr_1.22fr] overflow-hidden text-[#171714] shadow-[0_24px_80px_rgba(0,0,0,0.24)] md:min-h-[min(80svh,620px)] md:grid-cols-[0.92fr_1.08fr] md:grid-rows-1"
+        style={{
+          top: `calc(-5svh + ${index * 22}px)`,
+          zIndex: index + 1,
+          backgroundColor: cardColors[index % cardColors.length],
+          scale: reducedMotion ? 1 : cardScale,
+        }}
+      >
+        <div className="flex min-h-0 flex-col justify-between p-5 sm:p-8 md:p-10 lg:p-12">
+          <div>
+            <div className="flex items-center justify-between border-b border-black/20 pb-4 font-display text-[10px] uppercase tracking-[0.15em] text-black/60">
+              <span>Live deployment</span>
+              <span>
+                {investment.n} / {String(investments.length).padStart(2, "0")}
+              </span>
+            </div>
+            <p className="mt-5 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-[#5c5a51] sm:text-xs">
+              {investment.tags.join(" / ")}
+            </p>
+            <h3 className="mt-3 max-w-xl font-serif text-4xl leading-[0.9] tracking-[-0.025em] sm:text-5xl lg:text-6xl xl:text-7xl">
+              {investment.name}
+            </h3>
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-black/70 sm:mt-6 sm:text-base">
+              {investment.body}
+            </p>
+          </div>
+
+          <dl className="mt-6 grid grid-cols-3 gap-3 border-t border-black/20 pt-4 sm:gap-5 sm:pt-5">
+            {investment.stats.map(([label, value]) => (
+              <div key={label}>
+                <dd className="font-display text-base tabular-nums sm:text-xl">{value}</dd>
+                <dt className="mt-1 text-[9px] uppercase leading-tight tracking-[0.04em] text-black/60 sm:text-[10px]">
+                  {label}
+                </dt>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div className="relative min-h-0 overflow-hidden md:order-last">
+          <motion.div
+            className="absolute inset-0"
+            style={{ scale: reducedMotion ? 1 : imageScale }}
+          >
+            <img
+              src={investment.img}
+              alt={`${investment.name} deployment`}
+              width={1280}
+              height={832}
+              loading={index === 0 ? "eager" : "lazy"}
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+          <ArrowUpRight
+            aria-hidden="true"
+            className="absolute bottom-5 right-5 h-7 w-7 text-white drop-shadow sm:bottom-8 sm:right-8 sm:h-8 sm:w-8"
+          />
+        </div>
+      </motion.article>
+    </div>
+  );
+}
 
 export function InvestmentsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
-  const isManualRef = useRef(false);
-  const manualTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const stackRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: stackRef,
+    offset: ["start start", "end end"],
+  });
 
   useEffect(() => {
-    const onScroll = () => {
-      if (!sectionRef.current || isManualRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalScrollable = rect.height - windowHeight;
-      if (totalScrollable <= 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
 
-      const current = -rect.top;
-      const progress = Math.min(Math.max(current / totalScrollable, 0), 1);
+        const index = Number((visible.target as HTMLElement).dataset["index"]);
+        if (!Number.isNaN(index)) setActiveIndex(index);
+      },
+      { rootMargin: "-18% 0px -18% 0px", threshold: [0.2, 0.5, 0.8] },
+    );
 
-      if (rect.top <= 100 && rect.bottom >= windowHeight - 100) {
-        if (progress < 0.35) {
-          setActiveIndex(0);
-        } else if (progress < 0.7) {
-          setActiveIndex(1);
-        } else {
-          setActiveIndex(2);
-        }
-      }
-    };
+    cardRefs.current.forEach((card) => {
+      if (card) observer.observe(card);
+    });
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => observer.disconnect();
   }, []);
 
-  const handleItemClick = (i: number) => {
-    if (!sectionRef.current) return;
+  const registerCard = (index: number, element: HTMLDivElement | null) => {
+    cardRefs.current[index] = element;
+  };
 
-    if (activeIndex === i) {
-      setActiveIndex(null);
-      return;
-    }
+  const scrollToCard = (index: number) => {
+    cardRefs.current[index]?.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
 
-    setActiveIndex(i);
-    isManualRef.current = true;
-    if (manualTimeoutRef.current) clearTimeout(manualTimeoutRef.current);
-    manualTimeoutRef.current = setTimeout(() => {
-      isManualRef.current = false;
-    }, 900);
-
-    const rect = sectionRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const totalScrollable = rect.height - windowHeight;
-
-    const targetProgress = i === 0 ? 0.05 : i === 1 ? 0.5 : 0.88;
-    const targetScroll = window.scrollY + rect.top + totalScrollable * targetProgress;
-
-    window.scrollTo({ top: targetScroll, behavior: "smooth" });
+  const move = (direction: -1 | 1) => {
+    scrollToCard((activeIndex + direction + investments.length) % investments.length);
   };
 
   return (
-    <div ref={sectionRef} className="relative min-h-0 md:min-h-[160vh]">
-      {/* Anchor targets for external/hero links */}
-      <div id="investments" className="absolute top-0 pointer-events-none" />
-      <div id="inv-01" className="absolute top-0 pointer-events-none" />
-      <div id="inv-02" className="absolute top-[38%] pointer-events-none" />
-      <div id="inv-03" className="absolute top-[75%] pointer-events-none" />
-
-      {/* Sticky viewport frame */}
-      <section className="sticky top-0 flex min-h-screen flex-col justify-start px-6 py-8 md:justify-center md:px-10 md:py-12">
-        <div className="mx-auto w-full max-w-7xl">
-          {/* Section Header */}
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-4 md:mb-8">
-            <div className="flex items-center gap-3">
-              <h2 className="font-sans text-xs uppercase tracking-widest font-semibold text-muted-foreground">
-                ⊢ Investments
-              </h2>
-              <span className="hidden h-3 w-px bg-border sm:inline-block" />
-              <span className="hidden font-sans text-[11px] uppercase tracking-wider font-medium text-muted-foreground sm:inline-block">
-                Robotics Deployments
-              </span>
+    <section id="investments" className="border-y border-border bg-[#151513] text-[#f4f1e8]">
+      <div className="mx-auto max-w-[1500px] px-5 pt-16 sm:px-8 md:px-12 md:pt-24">
+        <div className="grid gap-12 pb-14 lg:grid-cols-[0.6fr_1.4fr] lg:gap-20 lg:pb-20">
+          <div>
+            <div className="mb-8 flex items-center gap-3 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[#c8c5ba]">
+              <span className="h-2 w-2 rounded-full bg-accent" />
+              Capital in motion
             </div>
-
-            <div className="flex items-center gap-4">
-              {/* Segmented progress indicator */}
-              <div className="flex items-center gap-1.5">
-                {investments.map((inv, i) => (
-                  <button
-                    key={inv.n}
-                    type="button"
-                    onClick={() => handleItemClick(i)}
-                    className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
-                      activeIndex === i
-                        ? "w-8 bg-accent"
-                        : "w-2 bg-foreground/20 hover:bg-foreground/40"
-                    }`}
-                    aria-label={`Go to ${inv.name}`}
-                  />
-                ))}
-              </div>
-
-              <span className="font-sans text-xs uppercase tracking-widest font-semibold text-muted-foreground">
-                [{activeIndex !== null ? `0${activeIndex + 1}` : "--"} / 03]
-              </span>
-
-              <span className="hidden items-center gap-1.5 font-sans text-[10px] uppercase font-medium text-muted-foreground md:flex">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                Scroll Driven
-              </span>
-            </div>
+            <h2 className="max-w-md font-serif text-5xl leading-[0.9] tracking-[-0.03em] sm:text-6xl md:text-8xl">
+              Built for the floor, not the pitch deck.
+            </h2>
+            <p className="mt-8 max-w-sm text-base leading-relaxed text-[#c8c5ba]">
+              Scroll to move through the systems that make physical automation useful where work
+              actually happens.
+            </p>
           </div>
 
-          {/* Investment list / smooth accordion */}
-          <div className="divide-y divide-border border-b border-border">
-            {investments.map((inv, i) => {
-              const isOpen = activeIndex === i;
-
-              return (
-                <article key={inv.n} className="group">
-                  <button
-                    type="button"
-                    onClick={() => handleItemClick(i)}
-                    className={`grid w-full grid-cols-12 items-center gap-4 py-4 text-left transition-colors duration-300 md:py-5 cursor-pointer ${
-                      isOpen ? "text-foreground" : "text-foreground/80 hover:text-foreground"
-                    }`}
-                    aria-expanded={isOpen}
-                  >
-                    <span className="col-span-2 flex items-center gap-2 font-sans text-sm font-semibold md:col-span-1">
-                      <span
-                        className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
-                          isOpen ? "scale-100 bg-accent" : "scale-0 bg-transparent"
-                        }`}
-                      />
-                      {inv.n}
-                    </span>
-
-                    <span className="col-span-7 min-w-0 font-display text-base uppercase tracking-tight transition-transform duration-300 sm:text-lg md:col-span-5 md:text-2xl lg:text-3xl">
-                      {inv.name}
-                    </span>
-
-                    <span className="hidden gap-2 md:col-span-4 md:flex">
-                      {inv.tags.map((t) => (
-                        <span
-                          key={t}
-                          className={`border px-2 py-0.5 font-sans text-[10px] uppercase tracking-wider font-medium transition-colors duration-300 ${
-                            isOpen
-                              ? "border-foreground/40 bg-foreground/5 text-foreground"
-                              : "border-border text-muted-foreground"
-                          }`}
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </span>
-
-                    <span className="col-span-3 flex items-center justify-end gap-2 text-right font-sans text-[10px] uppercase tracking-wider sm:text-xs md:col-span-2">
-                      <span className="hidden text-muted-foreground sm:inline font-medium">
-                        {isOpen ? "Close" : "More"}
-                      </span>
-                      <span
-                        className={`grid h-6 w-6 place-items-center rounded border transition-all duration-300 ${
-                          isOpen
-                            ? "border-foreground bg-foreground text-background"
-                            : "border-border text-foreground hover:border-foreground"
-                        }`}
-                      >
-                        {isOpen ? "−" : "+"}
-                      </span>
-                    </span>
-                  </button>
-
-                  {/* Smooth drawer expansion */}
-                  <div
-                    className={`grid transition-[grid-template-rows,opacity] duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                      isOpen
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[0fr] opacity-0 pointer-events-none"
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="grid gap-6 pt-2 pb-6 md:grid-cols-2 md:gap-10 md:pb-8">
-                        {/* Image preview */}
-                        <div className="relative overflow-hidden rounded border border-border bg-muted">
-                          <img
-                            src={inv.img}
-                            alt={inv.name}
-                            width={1280}
-                            height={832}
-                            loading="lazy"
-                            className="aspect-[16/10] w-full object-cover grayscale transition-all duration-700 hover:scale-105 hover:grayscale-0"
-                          />
-                          <div className="absolute top-3 left-3 flex items-center gap-2 rounded bg-background/85 px-2.5 py-1 font-sans text-[10px] uppercase tracking-wider font-semibold backdrop-blur-sm">
-                            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                            Active Deployment
-                          </div>
-                        </div>
-
-                        {/* Description & Metrics */}
-                        <div className="flex flex-col justify-between gap-6">
-                          <div>
-                            <span className="font-sans text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">
-                              Thesis & Impact
-                            </span>
-                            <p className="mt-2 text-base leading-relaxed text-foreground/90 md:text-lg font-sans">
-                              {inv.body}
-                            </p>
-                          </div>
-
-                          <dl className="grid grid-cols-3 gap-3 md:gap-4 border-t border-border pt-4">
-                            {inv.stats.map(([l, v]) => (
-                              <div key={l} className="border-l-2 border-foreground pl-3 md:pl-4">
-                                <dd className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl lg:text-4xl">
-                                  {v}
-                                </dd>
-                                <dt className="mt-1 font-sans text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">
-                                  {l}
-                                </dt>
-                              </div>
-                            ))}
-                          </dl>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+          <div className="flex items-end justify-between gap-5 border-b border-[#f4f1e8]/25 pb-4">
+            <div>
+              <p className="font-display text-xs uppercase tracking-[0.16em] text-[#c8c5ba]">
+                Scroll-driven deployments
+              </p>
+              <p className="mt-3 font-sans text-xs tabular-nums text-[#c8c5ba]">
+                {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                {String(investments.length).padStart(2, "0")}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => move(-1)}
+                className="grid h-10 w-10 place-items-center border border-[#f4f1e8]/40 transition-colors hover:bg-[#f4f1e8] hover:text-[#151513] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                aria-label="Previous investment"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => move(1)}
+                className="grid h-10 w-10 place-items-center border border-[#f4f1e8]/40 transition-colors hover:bg-[#f4f1e8] hover:text-[#151513] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                aria-label="Next investment"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
-      </section>
-    </div>
+
+        <div ref={stackRef}>
+          {investments.map((investment, index) => (
+            <InvestmentCard
+              key={investment.n}
+              investment={investment}
+              index={index}
+              progress={scrollYProgress}
+              reducedMotion={Boolean(prefersReducedMotion)}
+              registerCard={registerCard}
+            />
+          ))}
+        </div>
+
+        <nav
+          className="grid grid-cols-3 border-t border-[#f4f1e8]/25 pb-16 md:pb-24"
+          aria-label="Investment projects"
+        >
+          {investments.map((investment, index) => (
+            <button
+              key={investment.n}
+              type="button"
+              onClick={() => scrollToCard(index)}
+              className={`border-b py-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                index === activeIndex
+                  ? "border-accent text-[#f4f1e8]"
+                  : "border-[#f4f1e8]/25 text-[#c8c5ba] hover:text-[#f4f1e8]"
+              }`}
+              aria-current={index === activeIndex ? "step" : undefined}
+            >
+              <span className="block font-sans text-xs tabular-nums">{investment.n}</span>
+              <span className="mt-2 block font-display text-[10px] uppercase tracking-tight sm:text-sm">
+                {investment.name}
+              </span>
+            </button>
+          ))}
+        </nav>
+      </div>
+    </section>
   );
 }
 

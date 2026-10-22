@@ -1,23 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Shield, Clock, Lock } from "lucide-react";
 import { SiteNavbar } from "@/components/SiteNavbar";
+import { SiteFooter } from "@/components/SiteFooter";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy Policy — Axiom Robotics Capital" },
-      {
-        name: "description",
-        content:
-          "Privacy Policy, data stewardship, and information handling practices of Axiom Capital Management.",
-      },
-      { property: "og:title", content: "Privacy Policy — Axiom Robotics Capital" },
-      {
-        property: "og:description",
-        content: "Data governance and privacy commitments at Axiom Capital.",
-      },
-    ],
-  }),
+  head: () =>
+    seoHead({
+      title: "Privacy Policy | MARS Capital",
+      description:
+        "Read how MARS Capital Management handles information submitted through its website and related communications.",
+      path: "/privacy",
+    }),
   component: PrivacyPage,
 });
 
@@ -25,7 +19,7 @@ const sections = [
   {
     id: "overview",
     title: "1. Overview & Scope",
-    content: `Axiom Capital Management ("Axiom," "we," "us," or "our") deploys private capital and operational robotics systems into legacy industries. This Privacy Policy outlines how we collect, process, disclose, and safeguard personal and institutional information gathered through our website (axiomcapital.ai), investor portals, diligence rooms, and associated digital communications.`,
+    content: `MARS Capital Management ("MARS," "we," "us," or "our") deploys private capital and operational robotics systems into legacy industries. This Privacy Policy outlines how we collect, process, disclose, and safeguard personal and institutional information gathered through our website (MARScapital.ai), investor portals, diligence rooms, and associated digital communications.`,
   },
   {
     id: "data-collection",
@@ -58,7 +52,7 @@ const sections = [
   {
     id: "disclosure",
     title: "4. Information Sharing & Disclosures",
-    content: `Axiom does not sell, lease, or monetize your personal information. We disclose information strictly in limited operational scenarios:
+    content: `MARS does not sell, lease, or monetize your personal information. We disclose information strictly in limited operational scenarios:
 • Authorized Service Providers: Cloud infrastructure, secure vault hosting, identity screening vendors, and legal counsel bound by strict non-disclosure obligations.
 • Transactional Entities: During syndication, co-investment diligence, or asset acquisitions, subject to customary mutual non-disclosure agreements.
 • Legal Mandates: When required under subpoenas, court orders, SEC, FINRA, or state regulatory inquiries.`,
@@ -88,13 +82,13 @@ const sections = [
     id: "contact",
     title: "8. Contact & Data Protection Officer",
     content: `For privacy inquiries, rights requests, or questions regarding our information stewardship:
-Axiom Capital Management — Legal & Compliance
-Email: privacy@axiomcapital.ai
+MARS Capital Management — Legal & Compliance
+Email: privacy@MARScapital.ai
 Notice Response Window: We endeavor to address formal inquiries within 30 days of receipt.`,
   },
 ];
 
-export function PrivacyPage() {
+function PrivacyPage() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       {/* Navigation Bar */}
@@ -121,7 +115,7 @@ export function PrivacyPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl font-sans text-sm leading-relaxed text-muted-foreground">
-            How Axiom Capital collects, secures, and handles corporate, diligence, and operational
+            How MARS Capital collects, secures, and handles corporate, diligence, and operational
             telemetry across physical automation investments.
           </p>
         </div>
@@ -199,32 +193,7 @@ export function PrivacyPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-card/20 px-6 py-10 md:px-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <span className="font-display text-2xl uppercase">AXIOM</span>
-            <span className="font-sans text-xs text-muted-foreground">
-              © 2026 Axiom Capital Management. All rights reserved.
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-6 font-sans text-xs uppercase tracking-wider">
-            <Link to="/" className="text-muted-foreground hover:text-foreground">
-              Home
-            </Link>
-            <Link to="/terms" className="text-muted-foreground hover:text-foreground">
-              Terms & Conditions
-            </Link>
-            <a
-              href="mailto:privacy@axiomcapital.ai"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Contact Legal
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

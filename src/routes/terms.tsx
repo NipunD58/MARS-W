@@ -1,23 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Scale, Clock, AlertTriangle, ShieldCheck } from "lucide-react";
 import { SiteNavbar } from "@/components/SiteNavbar";
+import { SiteFooter } from "@/components/SiteFooter";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/terms")({
-  head: () => ({
-    meta: [
-      { title: "Terms & Conditions — Axiom Robotics Capital" },
-      {
-        name: "description",
-        content:
-          "Terms of Service, regulatory disclosures, and usage agreements for Axiom Capital Management.",
-      },
-      { property: "og:title", content: "Terms & Conditions — Axiom Robotics Capital" },
-      {
-        property: "og:description",
-        content: "Terms of service and legal conditions for Axiom Capital.",
-      },
-    ],
-  }),
+  head: () =>
+    seoHead({
+      title: "Terms & Conditions | MARS Capital",
+      description:
+        "Review the website terms, regulatory disclosures, and usage conditions for MARS Capital Management.",
+      path: "/terms",
+    }),
   component: TermsPage,
 });
 
@@ -25,28 +19,28 @@ const termsSections = [
   {
     id: "acceptance",
     title: "1. Acceptance of Terms",
-    content: `By accessing or using the website (axiomcapital.ai), investor data portals, or informational materials provided by Axiom Capital Management LLC and its affiliates ("Axiom," "we," or "us"), you acknowledge that you have read, understood, and agreed to be legally bound by these Terms & Conditions. If you do not accept these terms in their entirety, you must discontinue access immediately.`,
+    content: `By accessing or using the website (MARScapital.ai), investor data portals, or informational materials provided by MARS Capital Management LLC and its affiliates ("MARS," "we," or "us"), you acknowledge that you have read, understood, and agreed to be legally bound by these Terms & Conditions. If you do not accept these terms in their entirety, you must discontinue access immediately.`,
   },
   {
     id: "disclaimer",
     title: "2. Regulatory Status & No Investment Advice",
     content: `CRITICAL REGULATORY NOTICE:
 • Informational Sole Purpose: Nothing on this website constitutes an offer to sell, a solicitation of an offer to buy, or a recommendation to purchase any security, derivative, or investment fund interest.
-• Not Registered Investment Advice: Axiom does not provide tax, legal, or tailored financial advisory services through this platform. Prospective co-investors or institutional partners must consult independent qualified counsel.
+• Not Registered Investment Advice: MARS does not provide tax, legal, or tailored financial advisory services through this platform. Prospective co-investors or institutional partners must consult independent qualified counsel.
 • Accredited & Qualified Purchasers Only: Any future syndication or private placement is conducted solely via definitive confidential private placement memoranda (PPM) restricted to accredited investors under Rule 506(c) of Regulation D.`,
   },
   {
     id: "ip",
     title: "3. Intellectual Property Rights",
-    content: `All design systems, 3D interactive graphics, vector marks, robotics telemetry illustrations, typography pairings, editorial copy, and source code on this website are the proprietary property of Axiom Capital Management LLC or licensed under applicable agreements.
-You may not reproduce, decompile, mirror, scrape, or distribute any proprietary material without prior explicit written permission from Axiom.`,
+    content: `All design systems, 3D interactive graphics, vector marks, robotics telemetry illustrations, typography pairings, editorial copy, and source code on this website are the proprietary property of MARS Capital Management LLC or licensed under applicable agreements.
+You may not reproduce, decompile, mirror, scrape, or distribute any proprietary material without prior explicit written permission from MARS.`,
   },
   {
     id: "submissions",
     title: "4. Founder Materials & Pitch Submissions",
-    content: `Due to the high volume of investment pitches, business plans, and automation concepts submitted to Axiom:
+    content: `Due to the high volume of investment pitches, business plans, and automation concepts submitted to MARS:
 • Non-Confidential Treatment: Unsolicited proposals or email submissions through public channels are not treated as confidential or proprietary.
-• Prior Independent Development: Axiom actively evaluates dozens of physical automation and robotics opportunities; we may currently or in the future evaluate or finance concepts similar to ideas submitted.
+• Prior Independent Development: MARS actively evaluates dozens of physical automation and robotics opportunities; we may currently or in the future evaluate or finance concepts similar to ideas submitted.
 • Definitive Diligence: Confidentiality obligations arise only upon the mutual execution of our formal Mutual Non-Disclosure Agreement (MNDA).`,
   },
   {
@@ -55,7 +49,7 @@ You may not reproduce, decompile, mirror, scrape, or distribute any proprietary 
     content: `You agree not to:
 • Interfere with or compromise the security, infrastructure, or network integrity of our web servers
 • Utilize automated bots, crawlers, or scrapers without explicit API agreements
-• Impersonate Axiom partners, team members, or affiliated robotics portfolio executives
+• Impersonate MARS partners, team members, or affiliated robotics portfolio executives
 • Attempt unauthorized access to restricted investor data rooms or administrative consoles`,
   },
   {
@@ -67,7 +61,7 @@ You may not reproduce, decompile, mirror, scrape, or distribute any proprietary 
     id: "liability",
     title: "7. Limitation of Liability & Warranty Disclaimer",
     content: `This website and its digital assets are provided strictly "as is" and "as available" without warranty of any kind, whether express, statutory, or implied.
-To the maximum extent permitted by applicable law, Axiom, its managing partners, affiliates, and employees shall not be liable for any direct, indirect, incidental, punitive, or consequential damages arising from your reliance on or inability to access this platform.`,
+To the maximum extent permitted by applicable law, MARS, its managing partners, affiliates, and employees shall not be liable for any direct, indirect, incidental, punitive, or consequential damages arising from your reliance on or inability to access this platform.`,
   },
   {
     id: "governing-law",
@@ -79,12 +73,12 @@ To the maximum extent permitted by applicable law, Axiom, its managing partners,
     title: "9. Modifications & Legal Inquiries",
     content: `We reserve the right to revise these Terms at any time without prior individual notice. Material changes become effective immediately upon publication on this page.
 For legal notices, compliance verification, or formal inquiries:
-Axiom Capital Management — Office of General Counsel
-Email: legal@axiomcapital.ai`,
+MARS Capital Management — Office of General Counsel
+Email: legal@MARScapital.ai`,
   },
 ];
 
-export function TermsPage() {
+function TermsPage() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       {/* Navigation Bar */}
@@ -112,7 +106,7 @@ export function TermsPage() {
 
           <p className="mt-6 max-w-2xl font-sans text-sm leading-relaxed text-muted-foreground">
             Legal terms, investor qualifications, regulatory disclaimers, and intellectual property
-            protocols governing all Axiom Capital digital interfaces.
+            protocols governing all MARS Capital digital interfaces.
           </p>
 
           <div className="mt-8 flex items-start gap-3 rounded border border-accent/40 bg-accent/5 p-4 text-xs font-sans text-foreground/90 font-medium">
@@ -179,32 +173,7 @@ export function TermsPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-card/20 px-6 py-10 md:px-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <span className="font-display text-2xl uppercase">AXIOM</span>
-            <span className="font-sans text-xs text-muted-foreground">
-              © 2026 Axiom Capital Management. All rights reserved.
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-6 font-sans text-xs uppercase tracking-wider">
-            <Link to="/" className="text-muted-foreground hover:text-foreground">
-              Home
-            </Link>
-            <Link to="/privacy" className="text-muted-foreground hover:text-foreground">
-              Privacy Policy
-            </Link>
-            <a
-              href="mailto:legal@axiomcapital.ai"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Contact Legal
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

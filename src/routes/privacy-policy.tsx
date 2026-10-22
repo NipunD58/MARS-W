@@ -1,16 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PrivacyPage } from "./privacy";
+import { seoHead } from "@/lib/seo";
+import PrivacyPage from "./privacy";
 
 export const Route = createFileRoute("/privacy-policy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy Policy — Axiom Robotics Capital" },
-      {
-        name: "description",
-        content:
-          "Privacy Policy, data stewardship, and information handling practices of Axiom Capital Management.",
-      },
-    ],
-  }),
+  head: () =>
+    seoHead({
+      title: "Privacy Policy | MARS Capital",
+      description:
+        "Read how MARS Capital Management handles information submitted through its website and related communications.",
+      path: "/privacy",
+    }),
   component: PrivacyPage,
 });
