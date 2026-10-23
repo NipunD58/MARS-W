@@ -5,9 +5,12 @@ import { CurvedFooterWordmark } from "@/components/CurvedFooterWordmark";
 
 const sectionLinks = [
   ["Home", "/#thesis"],
-  ["Architecture", "/#architecture"],
-  ["Investments", "/#investments"],
-  ["Awards", "/#awards"],
+  ["Problem Statement & Abstract", "/#problem"],
+  ["Challenges & Solutions", "/#challenges"],
+  ["Methods & Hardware", "/#methods"],
+  ["Field Video & IoT", "/#video"],
+  ["SDGs & Field Observations", "/#observations"],
+  ["Future Roadmap", "/#future"],
   ["Team", "/#team"],
   ["Contact", "/#contact"],
 ];
@@ -51,7 +54,7 @@ export function SiteFooter() {
                 <li key={label}>
                   <a
                     href={href}
-                    className="flex min-h-12 items-center border-b border-[#dce0d8]/10 text-sm font-medium text-[#e7e9e5]/90 transition-colors hover:text-[#9ee65a] sm:text-base"
+                    className="flex min-h-11 items-center border-b border-[#dce0d8]/10 text-xs font-medium text-[#e7e9e5]/90 transition-colors hover:text-[#9ee65a] sm:text-sm"
                   >
                     {label}
                   </a>
@@ -61,15 +64,18 @@ export function SiteFooter() {
           </nav>
 
           <a
-            href="/#investments"
+            href="/#methods"
             className="group flex min-h-36 items-center justify-center gap-3 rounded-xl border border-[#dce0d8]/10 px-5 py-8 text-center text-xs font-semibold uppercase tracking-[0.08em] text-[#e7e9e5]/90 transition-colors hover:border-[#dce0d8]/25 hover:text-[#9ee65a] sm:text-sm"
           >
-            Explore the investments
+            Explore Technical Methods
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
 
-          <div className="flex min-h-36 items-center justify-center rounded-xl border border-[#dce0d8]/10 px-5 py-4 text-[#e7e9e5]">
-            <span className="font-sans text-2xl font-medium sm:text-3xl">MARS</span>
+          <div className="flex min-h-36 flex-col items-center justify-center rounded-xl border border-[#dce0d8]/10 px-5 py-4 text-[#e7e9e5]">
+            <span className="font-display text-2xl font-bold sm:text-3xl">MARS</span>
+            <span className="mt-1 font-sans text-[10px] uppercase tracking-wider text-muted-foreground text-center">
+              Multifunctional Agricultural Robotic System
+            </span>
           </div>
 
           <div className="grid min-h-24 grid-cols-2 items-center justify-items-center gap-x-3 gap-y-1 rounded-xl border border-[#dce0d8]/10 px-4 py-3 text-xs font-medium text-[#e7e9e5]/90 sm:text-sm md:col-span-2 xl:grid-cols-4">
@@ -86,10 +92,10 @@ export function SiteFooter() {
               Terms &amp; Conditions
             </Link>
             <a
-              href="mailto:contact@MARScapital.ai"
+              href="#contact"
               className="flex min-h-11 items-center justify-center text-center transition-colors hover:text-[#9ee65a]"
             >
-              Contact
+              Contact Team
             </a>
             <a
               href="/#thesis"
@@ -104,7 +110,8 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-[1440px] px-2 sm:px-8">
         <CurvedFooterWordmark scrollTarget={footerRef} />
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-[#dce0d8]/15 py-4 font-sans text-xs uppercase tracking-[0.1em] text-[#e7e9e5]/75 sm:py-5 sm:text-sm">
-          <span>© 2026 MARS Capital Management</span>
+          <span>© 2026 MARS — Multifunctional Agricultural Robotic System</span>
+          <span className="text-muted-foreground">Democratizing precision robotics for smallholder farmers</span>
         </div>
       </div>
     </footer>

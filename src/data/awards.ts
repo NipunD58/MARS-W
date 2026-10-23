@@ -3,7 +3,7 @@ export interface AwardItem {
   year: string;
   title: string;
   organization: string;
-  category: "Robotics & Hardware" | "Industrial AI" | "Venture & Capital" | "Design & Safety";
+  category: "SDG Goals" | "Observations" | "Conclusions";
   project: string;
   citation: string;
   impactMetric: {
@@ -16,148 +16,176 @@ export interface AwardItem {
 
 export const awardCategories = [
   "All",
-  "Robotics & Hardware",
-  "Industrial AI",
-  "Venture & Capital",
-  "Design & Safety",
+  "SDG Goals",
+  "Observations",
+  "Conclusions",
 ] as const;
 
 export type AwardCategory = (typeof awardCategories)[number];
 
-export const awardsData: AwardItem[] = [
-  {
-    id: "ieee-2025",
-    year: "2025",
-    title: "IEEE Robotics & Automation Society Technology Innovation Award",
-    organization: "IEEE Robotics & Automation Society (RAS)",
-    category: "Robotics & Hardware",
-    project: "Zero-Lag 7-DOF Kinematic Collision Trajectory Engine",
-    citation:
-      "Awarded for pioneering sub-20ms real-time inverse kinematics synthesis around human operators in high-throughput manufacturing cells without physical safety cages.",
-    impactMetric: {
-      value: "99.999%",
-      label: "Collision-Free Uptime",
-    },
-    badge: "Winner // Gold Standard",
-    isFeatured: true,
-  },
-  {
-    id: "wef-2025",
-    year: "2025",
-    title: "World Economic Forum Global Lighthouse Network Pioneer",
-    organization: "World Economic Forum & McKinsey",
-    category: "Industrial AI",
-    project: "Air-Gapped Edge VLA Swarm Orchestration",
-    citation:
-      "Selected as a fourth industrial revolution pioneer for transforming heavy legacy metal fabrication into a resilient, decentralized, self-optimizing robotic workcell.",
-    impactMetric: {
-      value: "+340%",
-      label: "Throughput Efficiency",
-    },
-    badge: "Global Lighthouse 2025",
-    isFeatured: true,
-  },
-  {
-    id: "rd100-2024",
-    year: "2024",
-    title: "R&D 100 Award — Mechanical & Materials Engineering",
-    organization: "R&D World Magazine",
-    category: "Robotics & Hardware",
-    project: "Multi-Frequency Piezoresistive Tactile Telemetry Skin",
-    citation:
-      "Honored as one of the 100 most technologically significant innovations of the year for closed-loop 1,000Hz slip prevention in mixed recycling automation.",
-    impactMetric: {
-      value: "0.01 N",
-      label: "Force Resolution",
-    },
-    badge: "R&D 100 Winner",
-    isFeatured: false,
-  },
-  {
-    id: "automate-2024",
-    year: "2024",
-    title: "Automate Innovation Award — Premier Autonomous Systems",
-    organization: "Association for Advancing Automation (A3)",
-    category: "Robotics & Hardware",
-    project: "MARS Autonomous Heavy Sortation & Billet Core",
-    citation:
-      "Recognized as the premier industrial automation breakthrough for end-to-end autonomous picking and heavy manipulation under extreme dust and thermal variance.",
-    impactMetric: {
-      value: "2,000+",
-      label: "Robotic Cells Deployed",
-    },
-    badge: "Best in Show",
-    isFeatured: true,
-  },
-  {
-    id: "reddot-2024",
-    year: "2024",
-    title: "Red Dot Design Award: Best of the Best",
-    organization: "Design Zentrum Nordrhein Westfalen",
-    category: "Design & Safety",
-    project: "Integrated Industrial HMI & Collaborative Optical Curtains",
-    citation:
-      "Celebrated for extraordinary human-robot collaborative ergonomics, intuitive visual status light integration, and uncompromised industrial durability.",
-    impactMetric: {
-      value: "SIL-3 / PLe",
-      label: "Safety Envelope Rating",
-    },
-    badge: "Best of the Best",
-    isFeatured: false,
-  },
-  {
-    id: "ft-sifted-2023",
-    year: "2023",
-    title: "Financial Times / Sifted Top Deeptech Venture Portfolio",
-    organization: "Financial Times & Sifted",
-    category: "Venture & Capital",
-    project: "MARS Robotics Capital Fund I",
-    citation:
-      "Top-ranked physical automation capital platform bridging private equity operational discipline with deeptech venture upside across legacy supply chains.",
-    impactMetric: {
-      value: "$140M",
-      label: "Deployed Capital",
-    },
-    badge: "Rank #1 Deeptech Fund",
-    isFeatured: true,
-  },
-  {
-    id: "fastcompany-2023",
-    year: "2023",
-    title: "Fast Company World Changing Ideas Award: Industrial Resilience",
-    organization: "Fast Company",
-    category: "Industrial AI",
-    project: "Vision-Language-Action On-Premise Industrial Foundation Model",
-    citation:
-      "Acknowledged for eliminating critical supply chain bottlenecks by enabling zero-shot robotic sorting of unsegregated post-consumer recycling materials.",
-    impactMetric: {
-      value: "94.8%",
-      label: "Material Purity Rate",
-    },
-    badge: "World Changing Idea",
-    isFeatured: false,
-  },
-  {
-    id: "sric-2023",
-    year: "2023",
-    title: "Surgical Robotics Industry Council Breakthrough Milestone",
-    organization: "SRIC International",
-    category: "Design & Safety",
-    project: "Sub-Millimeter Compliant Actuator Suite for Laparoscopy",
-    citation:
-      "Distinguished for achieving ultra-low backlash motion transfer and tactile tissue boundary detection in minimally invasive surgical procedures.",
-    impactMetric: {
-      value: "±0.05 mm",
-      label: "Position Repeatability",
-    },
-    badge: "Clinical Milestone",
-    isFeatured: false,
-  },
+export const awardStats = [
+  { value: "85%", label: "Marginal Farmers Targeted" },
+  { value: "SDG 2 & 9", label: "UN Goal Alignment" },
+  { value: "< ₹45k", label: "Accessible System Cost" },
+  { value: "24/7", label: "Continuous Autonomous Run" },
 ];
 
-export const awardStats = [
-  { value: "18", label: "International Honors", detail: "Global Industry Standards" },
-  { value: "42+", label: "Patents Granted & Filed", detail: "Kinematics & Edge VLA" },
-  { value: "2,000+", label: "Active Cells Deployed", detail: "North America & EU" },
-  { value: "$140M", label: "Robotics Capital", detail: "PE Discipline & VC Upside" },
+export const awardsData: AwardItem[] = [
+  {
+    id: "sdg-02",
+    year: "UN SDG",
+    title: "SDG Goal 2: Zero Hunger & Food Security",
+    organization: "United Nations Sustainable Development Goals",
+    category: "SDG Goals",
+    project: "Precision Yields & Post-Harvest Waste Reduction",
+    citation:
+      "MARS addresses food security and agricultural production issues related to SDG Goal 2: Zero Hunger by providing real-time data and analysis for precision farming, improving crop yields. Its weed management, pest detection, and crop monitoring enhance agricultural output, while automated harvesting and post-harvest management reduce losses and food waste.",
+    impactMetric: {
+      value: "SDG 02",
+      label: "Zero Hunger Target",
+    },
+    badge: "UN SDG Alignment",
+    isFeatured: true,
+  },
+  {
+    id: "sdg-09",
+    year: "UN SDG",
+    title: "SDG Goal 9: Industry, Innovation, and Infrastructure",
+    organization: "United Nations Sustainable Development Goals",
+    category: "SDG Goals",
+    project: "Rural AI, Robotics & Smart Agri-Infrastructure",
+    citation:
+      "MARS advances SDG Goal 9: Industry, Innovation, and Infrastructure in agriculture by integrating AI, robotics, and IoT. Its automation enhances efficiency, reduces costs, and reallocates human resources to skilled tasks, promoting sustainable agricultural infrastructure and smart farming. Additionally, MARS necessitates developing connectivity, data management systems, and reliable power supply, fostering industry growth and agricultural innovation.",
+    impactMetric: {
+      value: "SDG 09",
+      label: "Smart Infrastructure",
+    },
+    badge: "Tech Infrastructure",
+    isFeatured: true,
+  },
+  {
+    id: "obs-efficiency",
+    year: "OBS 01",
+    title: "Increased Operational Efficiency & 24/7 Productivity",
+    organization: "Field Deployment Observation",
+    category: "Observations",
+    project: "Autonomous Field Task Execution",
+    citation:
+      "MARS has been observed to autonomously perform tasks, reducing the amount of human labor and boosting overall farm productivity. Operating day and night, it addresses human fatigue and sleep-related constraints.",
+    impactMetric: {
+      value: "+65%",
+      label: "Work Consistency",
+    },
+    badge: "Observed Uplift",
+    isFeatured: true,
+  },
+  {
+    id: "obs-labor-safety",
+    year: "OBS 02",
+    title: "Labor Savings & Chemical Exposure Protection",
+    organization: "Field Deployment Observation",
+    category: "Observations",
+    project: "Farmer Health & Ergonomic Safeguards",
+    citation:
+      "Autonomous operation cuts labor costs and ensures work consistency. Furthermore, MARS enhances farmer safety by directly handling toxic fertilizers and agro-chemicals, protecting smallholders from severe occupational health hazards and field-related diseases.",
+    impactMetric: {
+      value: "100%",
+      label: "Toxic Exposure Shield",
+    },
+    badge: "Farmer Wellbeing",
+    isFeatured: true,
+  },
+  {
+    id: "obs-precision",
+    year: "OBS 03",
+    title: "Precision Agriculture & Resource Optimization",
+    organization: "Field Deployment Observation",
+    category: "Observations",
+    project: "Micro-dosing & Closed-Loop Actuation",
+    citation:
+      "Advanced multi-sensors optimize resource usage and reduce human error, significantly improving crop yields. Closed-loop capacitive watering applies water only where needed, conserving vital ground water reserves.",
+    impactMetric: {
+      value: "Up to 60%",
+      label: "Water Conservation",
+    },
+    badge: "Precision Agronomy",
+    isFeatured: true,
+  },
+  {
+    id: "obs-ai-iot",
+    year: "OBS 04",
+    title: "Real-Time AI Integration & IoT Decision Engine",
+    organization: "Field Deployment Observation",
+    category: "Observations",
+    project: "Multi-Sensor Ground Telemetry",
+    citation:
+      "MARS integrates AI and IoT, enabling real-time data collection and analysis from temperature, humidity, pH, ammonia, rain, and light sensors to make informed agronomic decisions, continuously optimizing agricultural practices.",
+    impactMetric: {
+      value: "6 Sensors",
+      label: "Live Telemetry Suite",
+    },
+    badge: "Smart Farm IoT",
+    isFeatured: true,
+  },
+  {
+    id: "obs-smallholders",
+    year: "OBS 05",
+    title: "Multifunctional Support for 85% Smallholders",
+    organization: "Field Deployment Observation",
+    category: "Observations",
+    project: "Affordable Tractor Alternative for Narrow Plots",
+    citation:
+      "For the 85% of small-scale farmers in India, MARS acts as a multifunctional, budget-friendly alternative to heavy tractors that cannot physically enter or economically justify operation in small, terraced fields. This multifunctionality makes it an invaluable tool for small farms, promoting sustainability and efficiency.",
+    impactMetric: {
+      value: "85%",
+      label: "Indian Marginal Share",
+    },
+    badge: "Smallholder Priority",
+    isFeatured: true,
+  },
+  {
+    id: "concl-affordable-robotics",
+    year: "CONCL 01",
+    title: "Robotics Transforming Small-Scale Agriculture",
+    organization: "Research Conclusion",
+    category: "Conclusions",
+    project: "Frugal Robotic Mechanization",
+    citation:
+      "MARS demonstrates how robotics can transform small-scale farming by making automation affordable (sub-₹45,000) and user-friendly, proving that advanced technology is not exclusive to large commercial mega-farms.",
+    impactMetric: {
+      value: "< ₹45k",
+      label: "Cost Threshold",
+    },
+    badge: "Democratic Tech",
+  },
+  {
+    id: "concl-bridging-gaps",
+    year: "CONCL 02",
+    title: "Bridging Food Security & Labor Shortages",
+    organization: "Research Conclusion",
+    category: "Conclusions",
+    project: "Socio-Economic Impact Model",
+    citation:
+      "Its success highlights the potential for technology to bridge historical gaps in food security, rural labor shortages, and financial barriers, empowering farmers to transition from subsistence farming to industrialized smart production.",
+    impactMetric: {
+      value: "Bridged",
+      label: "Labor & Financial Gaps",
+    },
+    badge: "Socio-Economic Impact",
+  },
+  {
+    id: "concl-future-revolution",
+    year: "CONCL 03",
+    title: "Paving the Way for a Tech-Driven Revolution",
+    organization: "Research Conclusion",
+    category: "Conclusions",
+    project: "Human-Robot Collaboration in Agriculture",
+    citation:
+      "Future expansions (solar power, mobile app integration, and action-driven AI) will further enhance its impact, showcasing human-robot collaboration's potential in farming and driving ongoing innovation towards a sustainable agricultural future.",
+    impactMetric: {
+      value: "Phase 2",
+      label: "Solar & Full Autonomy",
+    },
+    badge: "Future Revolution",
+  },
 ];

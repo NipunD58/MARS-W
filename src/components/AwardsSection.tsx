@@ -10,7 +10,7 @@ import {
 
 export function AwardsSection() {
   const [selectedCategory, setSelectedCategory] = useState<AwardCategory>("All");
-  const [selectedId, setSelectedId] = useState("ieee-2025");
+  const [selectedId, setSelectedId] = useState("sdg-02");
   const filteredAwards = awardsData.filter(
     (item) => selectedCategory === "All" || item.category === selectedCategory,
   );
@@ -25,58 +25,61 @@ export function AwardsSection() {
   if (!selectedAward) return null;
 
   return (
-    <section id="awards" className="bg-[#151515] text-white" aria-label="Awards and recognition">
+    <section id="observations" className="bg-[#151515] text-white" aria-label="SDG Goals and Observations">
       <div className="mx-auto max-w-[1500px] px-5 py-16 sm:px-8 md:px-12 md:py-24">
         <div className="grid gap-14 lg:grid-cols-[0.58fr_1.42fr] lg:gap-20">
           <div>
-            <h2 className="max-w-sm font-serif text-5xl leading-[0.9] tracking-[-0.03em] text-white sm:text-6xl md:text-8xl">
-              Recognition that survives contact with reality.
+            <span className="font-sans text-xs uppercase tracking-widest font-semibold text-[#AAE841]">
+              IMPACT, SDGS &amp; OBSERVATIONS
+            </span>
+            <h2 className="mt-3 max-w-sm font-serif text-4xl leading-[0.92] tracking-[-0.03em] text-white sm:text-5xl md:text-7xl">
+              Validated in the field, aligned with global goals.
             </h2>
-            <p className="mt-8 max-w-sm text-sm leading-relaxed text-white/60">
-              A record of work evaluated by the engineering, industrial, and capital communities
-              MARS serves.
+            <p className="mt-6 max-w-sm text-sm sm:text-base leading-relaxed text-white/70">
+              The MARS project showcases the transformative potential of robots and AI in agriculture: navigating tough terrain, automating labor-intensive tasks, and protecting farmer wellbeing.
             </p>
 
-            <dl className="mt-12 grid grid-cols-2 border-t border-white/15">
+            <dl className="mt-10 grid grid-cols-2 border-t border-white/15">
               {awardStats.map((stat) => (
-                <div key={stat.label} className="border-b border-r border-white/15 py-5 pr-4">
-                  <dd className="font-display text-2xl text-[#AAE841]">{stat.value}</dd>
-                  <dt className="mt-2 text-[10px] uppercase leading-tight tracking-wider text-white/55">
+                <div key={stat.label} className="border-b border-r border-white/15 py-4 pr-4">
+                  <dd className="font-display text-xl sm:text-2xl text-[#AAE841] font-bold">{stat.value}</dd>
+                  <dt className="mt-1 text-[10px] uppercase leading-tight tracking-wider text-white/60">
                     {stat.label}
                   </dt>
                 </div>
               ))}
             </dl>
 
-            <div className="mt-8 flex items-start gap-3 border-t border-white/15 pt-5 text-xs leading-relaxed text-white/55">
+            <div className="mt-8 flex items-start gap-3 border-t border-white/15 pt-5 text-xs leading-relaxed text-white/65">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#AAE841]" />
-              <span>Independent jury validation across every listed distinction.</span>
+              <span>Directly targeting UN SDG Goal 2 (Zero Hunger) &amp; Goal 9 (Industry, Innovation &amp; Infrastructure).</span>
             </div>
           </div>
 
           <div>
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/20 pb-5">
               <p className="font-display text-xs uppercase tracking-[0.16em] text-white/50">
-                The archive / 2023—2025
+                SDG Goals, Field Observations &amp; Conclusions
               </p>
               <a
-                href="#contact"
+                href="#future"
                 className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-white transition-colors hover:text-[#AAE841] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#AAE841]"
               >
-                Request dossier <ArrowUpRight className="h-3.5 w-3.5" />
+                View Future Roadmap <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-2" aria-label="Award categories">
+            <div className="mt-5 flex flex-wrap gap-2" aria-label="Categories">
               {awardCategories.map((category) => (
                 <button
                   key={category}
                   type="button"
                   onClick={() => selectCategory(category)}
-                  className={`px-3 py-2 text-[10px] uppercase tracking-wider transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#AAE841] ${selectedCategory === category
-                      ? "bg-[#AAE841] text-black"
+                  className={`px-3 py-2 text-[10px] uppercase tracking-wider transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#AAE841] ${
+                    selectedCategory === category
+                      ? "bg-[#AAE841] text-black font-bold"
                       : "border border-white/20 text-white/60 hover:border-white/60 hover:text-white"
-                    }`}
+                  }`}
                   aria-pressed={selectedCategory === category}
                 >
                   {category}
@@ -90,51 +93,65 @@ export function AwardsSection() {
                 return (
                   <article
                     key={item.id}
-                    className={`border-b border-white/15 transition-colors ${isSelected ? "bg-white/[0.06]" : ""
-                      }`}
+                    className={`border-b border-white/15 transition-colors ${
+                      isSelected ? "bg-white/[0.06]" : ""
+                    }`}
                   >
                     <button
                       type="button"
                       onClick={() => setSelectedId(item.id)}
-                      className="grid w-full grid-cols-[50px_1fr_24px] items-start gap-4 px-3 py-5 text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#AAE841] sm:grid-cols-[70px_1fr_24px] sm:px-5"
+                      className="grid w-full grid-cols-[60px_1fr_24px] items-start gap-4 px-3 py-5 text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#AAE841] sm:grid-cols-[80px_1fr_24px] sm:px-5 cursor-pointer"
                       aria-expanded={isSelected}
                     >
-                      <span className="font-display text-xs text-[#AAE841]">{item.year}</span>
-                      <span>
-                        <span className="block font-sans text-base font-semibold leading-tight text-white sm:text-lg">
-                          {item.title}
-                        </span>
-                        <span className="mt-2 block text-[10px] uppercase tracking-wider text-white/45">
-                          {item.organization} / {item.category}
-                        </span>
+                      <span className="font-mono text-xs uppercase text-[#AAE841] font-semibold">
+                        {item.year}
                       </span>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3 className="font-serif text-lg leading-tight text-white sm:text-xl font-medium">
+                            {item.title}
+                          </h3>
+                          <span className="rounded bg-white/10 px-2 py-0.5 text-[9px] uppercase tracking-wider text-white/70">
+                            {item.category}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-xs text-white/50">{item.organization}</p>
+                      </div>
                       <ChevronDown
-                        className={`mt-1 h-4 w-4 text-white/50 transition-transform ${isSelected ? "rotate-180 text-[#AAE841]" : ""
-                          }`}
+                        className={`h-4 w-4 text-white/40 transition-transform ${
+                          isSelected ? "rotate-180 text-[#AAE841]" : ""
+                        }`}
                       />
                     </button>
 
                     {isSelected && (
-                      <div className="grid gap-7 px-3 pb-6 sm:grid-cols-[1fr_190px] sm:px-[95px]">
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-white/45">
-                            Recognized work
-                          </p>
-                          <p className="mt-2 text-sm leading-relaxed text-white/75">
-                            {item.project}
-                          </p>
-                          <blockquote className="mt-5 border-l border-[#AAE841] pl-4 font-serif text-lg italic leading-relaxed text-white/90">
-                            “{item.citation}”
-                          </blockquote>
-                        </div>
-                        <div className="self-start border border-white/15 p-4">
-                          <p className="text-[10px] uppercase tracking-wider text-white/45">
-                            Verified metric
-                          </p>
-                          <p className="mt-3 font-display text-2xl text-[#AAE841]">
-                            {item.impactMetric.value}
-                          </p>
-                          <p className="mt-1 text-xs text-white/65">{item.impactMetric.label}</p>
+                      <div className="border-t border-white/10 px-4 py-6 sm:px-6">
+                        <div className="grid gap-6 md:grid-cols-[1.3fr_0.7fr]">
+                          <div>
+                            <span className="text-[10px] uppercase tracking-widest text-[#AAE841] font-semibold block">
+                              Detailed Analysis
+                            </span>
+                            <p className="mt-2 text-sm leading-relaxed text-white/85">
+                              {item.citation}
+                            </p>
+                          </div>
+                          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 flex flex-col justify-between">
+                            <div>
+                              <span className="text-[9px] uppercase tracking-wider text-white/50 block">
+                                Key Measured Impact
+                              </span>
+                              <div className="mt-1 font-display text-2xl font-bold text-[#AAE841]">
+                                {item.impactMetric.value}
+                              </div>
+                              <span className="text-xs text-white/70">
+                                {item.impactMetric.label}
+                              </span>
+                            </div>
+                            <div className="mt-4 border-t border-white/10 pt-3 flex items-center justify-between text-[10px] text-white/50">
+                              <span>VERIFICATION</span>
+                              <span className="text-white font-semibold">{item.badge}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     )}

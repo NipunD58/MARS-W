@@ -56,15 +56,16 @@ export function FeaturesCarousel() {
   if (!activeLayer) return null;
 
   return (
-    <section id="architecture" className="border-b border-border bg-background py-14 md:py-28">
+    <section id="methods" className="border-b border-border bg-background py-14 md:py-28">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* Section Headline matching reference style */}
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-serif text-3xl leading-[1.05] tracking-tight text-foreground sm:text-4xl md:text-6xl lg:text-7xl">
-            Six layers. One unified automation state.
+
+          <h2 className="mt-3 font-serif text-3xl leading-[1.05] tracking-tight text-foreground sm:text-4xl md:text-6xl lg:text-7xl">
+            Five core methods. One autonomous agricultural system.
           </h2>
           <p className="mt-6 font-sans text-xs uppercase tracking-widest text-muted-foreground md:text-sm font-medium">
-            Each layer resolves one source of operational uncertainty:
+            Engineered from the ground up for small and marginal fields in India:
           </p>
         </div>
 
@@ -77,11 +78,10 @@ export function FeaturesCarousel() {
                 key={layer.id}
                 type="button"
                 onClick={() => setActiveIndex(idx)}
-                className={`rounded-full px-4 py-2 font-sans text-xs uppercase font-medium tracking-wider transition-all duration-300 cursor-pointer ${
-                  isCurrent
+                className={`rounded-full px-4 py-2 font-sans text-xs uppercase font-medium tracking-wider transition-all duration-300 cursor-pointer ${isCurrent
                     ? "bg-foreground text-background shadow-md"
                     : "border border-border bg-card/60 text-muted-foreground hover:border-foreground hover:text-foreground"
-                }`}
+                  }`}
                 aria-pressed={isCurrent}
               >
                 {layer.tabLabel}
@@ -136,11 +136,10 @@ export function FeaturesCarousel() {
                     zIndex,
                     pointerEvents: isVisible ? "auto" : "none",
                   }}
-                  className={`absolute top-4 left-1/2 -ml-[140px] h-[350px] w-[280px] rounded-3xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:-ml-[160px] sm:h-[390px] sm:w-[320px] md:-ml-[175px] md:h-[420px] md:w-[350px] cursor-pointer ${
-                    layer.isAccent
+                  className={`absolute top-4 left-1/2 -ml-[140px] h-[350px] w-[280px] rounded-3xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:-ml-[160px] sm:h-[390px] sm:w-[320px] md:-ml-[175px] md:h-[420px] md:w-[350px] cursor-pointer ${layer.isAccent
                       ? "bg-[#AAE841] text-black shadow-2xl ring-2 ring-[#AAE841]/50"
                       : "border border-border bg-card text-card-foreground shadow-xl hover:border-foreground/40"
-                  } ${isCenter ? "shadow-2xl ring-1 ring-border" : "hover:opacity-100"}`}
+                    } ${isCenter ? "shadow-2xl ring-1 ring-border" : "hover:opacity-100"}`}
                 >
                   {/* Card Inner Content */}
                   <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl">
@@ -149,21 +148,19 @@ export function FeaturesCarousel() {
 
                     {/* Footer bar with Brief Action */}
                     <div
-                      className={`flex items-center justify-between border-t px-6 py-3.5 ${
-                        layer.isAccent
+                      className={`flex items-center justify-between border-t px-6 py-3.5 ${layer.isAccent
                           ? "border-black/20 text-black bg-black/5"
                           : "border-border bg-card/80 text-muted-foreground"
-                      }`}
+                        }`}
                     >
                       <span className="font-sans text-xs uppercase tracking-wider font-semibold">
                         {isCenter ? "Click to view brief" : "Select layer"}
                       </span>
                       <span
-                        className={`flex h-6 w-6 items-center justify-center rounded-full transition-transform duration-300 ${
-                          layer.isAccent
+                        className={`flex h-6 w-6 items-center justify-center rounded-full transition-transform duration-300 ${layer.isAccent
                             ? "bg-black text-[#AAE841]"
                             : "border border-border text-foreground group-hover:border-foreground"
-                        }`}
+                          }`}
                       >
                         <ArrowRight className="h-3 w-3" />
                       </span>

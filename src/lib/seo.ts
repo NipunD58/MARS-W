@@ -1,5 +1,5 @@
-export const SITE_URL = "https://MARScapital.ai";
-export const SITE_NAME = "MARS Capital";
+export const SITE_URL = "https://mars-robotics.org";
+export const SITE_NAME = "MARS Robotics";
 export const SOCIAL_IMAGE = `${SITE_URL}/og-image.png`;
 
 type SeoPage = {
@@ -24,7 +24,7 @@ export function seoHead({ title, description, path }: SeoPage) {
       { property: "og:image", content: SOCIAL_IMAGE },
       {
         property: "og:image:alt",
-        content: "MARS Capital — robotics capital for legacy industries",
+        content: "MARS — Multifunctional Agricultural Robotic System for Smallholder Farmers",
       },
       { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
